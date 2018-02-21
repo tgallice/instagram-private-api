@@ -1,19 +1,25 @@
 module Instagram
   module Account
     def self.login(user)
-      request = Instagram::API.http(
+      response = Instagram::API.http(
         url: Constants::URL + 'accounts/login/',
         method: 'POST',
         user: user,
         body: format(
           'ig_sig_key_version=4&signed_body=%s',
           Instagram::API.generate_signature(
+            phone_id: Instagram::API.generate_uuid,
             device_id: user.device_id,
-            login_attempt_user: 0, password: user.password, username: user.username,
-            _csrftoken: 'missing', _uuid: Instagram::API.generate_uuid
+            login_attempt_user: 0,
+            password: user.password,
+            username: user.username,
+            _csrftoken: nil,
+            _uuid: Instagram::API.generate_uuid,
+            adid: Instagram::API.generate_uuid,
+            guid: Instagram::API.generate_uuid
           ))
       )
-      json_body = JSON.parse request.body
+      json_body = JSON.parse response.body
       logged_in_user = json_body['logged_in_user']
       user.data = {
         id: logged_in_user['pk'],
@@ -25,7 +31,7 @@ module Instagram
         is_business: logged_in_user['is_business']
       }
       cookies_array = []
-      all_cookies = request.get_fields('set-cookie')
+      all_cookies = response.get_fields('set-cookie')
       all_cookies.each do |cookie|
         cookies_array.push(cookie.split('; ')[0])
       end
