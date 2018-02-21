@@ -8,15 +8,15 @@ module Instagram
         body: format(
           'ig_sig_key_version=4&signed_body=%s',
           Instagram::API.generate_signature(
-            phone_id: Instagram::API.generate_uuid,
+            phone_id: user.phone_id,
             device_id: user.device_id,
             login_attempt_user: 0,
             password: user.password,
             username: user.username,
             _csrftoken: nil,
-            _uuid: Instagram::API.generate_uuid,
-            adid: Instagram::API.generate_uuid,
-            guid: Instagram::API.generate_uuid
+            _uuid: user.uuid,
+            adid: user.advertising_id,
+            guid: user.uuid,
           ))
       )
       json_body = JSON.parse response.body

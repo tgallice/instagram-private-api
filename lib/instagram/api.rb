@@ -7,9 +7,6 @@ require 'json'
 require 'instagram/user'
 require 'instagram/account'
 require 'instagram/feed'
-require 'erb'
-
-include ERB::Util
 
 module Instagram
   module API
@@ -36,7 +33,7 @@ module Instagram
 
     def self.generate_signature(data)
       data = data.to_json
-      compute_hash(data) + '.' + url_encode(data)
+      compute_hash(data) + '.' + Instagram::Utils.encode(data)
     end
 
     def self.http(args)

@@ -7,10 +7,8 @@ module Instagram
     attr_reader :username
     attr_reader :password
     attr_reader :language
-    attr_reader :data
-    attr_writer :data
-    attr_reader :session
-    attr_writer :session
+    attr_accessor :data
+    attr_accessor :session
 
     def initialize(username, password, session = nil, data = nil)
       @username = username
@@ -79,6 +77,31 @@ module Instagram
 
     def device_id
       'android-' + md5[0..15]
+    end
+
+    def phone_id
+      Instagram::API::generate_uuid
+    end
+
+    def uuid
+      Instagram::API::generate_uuid
+    end
+
+    def advertising_id
+      Instagram::API::generate_uuid
+    end
+
+    def csrf_token
+      return nil if @session.nil?
+      csrf_token = nil
+
+      @session.split(', ').each do |cookie|
+        name, value = cookie.split('=')
+
+        csrf_token = value if name == 'csrftoken'
+      end
+
+      csrf_token
     end
   end
 end
