@@ -41,7 +41,7 @@ module Instagram
 
     def self.http(args)
       args[:url] = URI.parse(args[:url])
-      http = Net::HTTP.new(args[:url].host, args[:url].port, '127.0.0.1', '8888')
+      http = Net::HTTP.new(args[:url].host, args[:url].port)
       http.use_ssl = true
       http.verify_mode = OpenSSL::SSL::VERIFY_NONE
       request = nil
@@ -57,6 +57,9 @@ module Instagram
                                      :'Accept-Language' => args[:user].language,
                                      :'X-IG-Capabilities' => Instagram::Constants::HEADER[:capabilities],
                                      :'X-IG-Connection-Type' => Instagram::Constants::HEADER[:type],
+                                     :'X-IG-Connection-Speed' => "#{rand(5000)}kbps",
+                                     :'X-FB-HTTP-Engine' => Instagram::Constants::FB_HTTP_ENGINE,
+                                     :'Content-Type' => Instagram::Constants::HEADER[:content_type],
                                      :Cookie => (args[:user].session.nil? ? '' : args[:user].session))
       request.body = args.key?(:body) ? args[:body] : nil
       http.request(request)
