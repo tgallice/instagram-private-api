@@ -1,6 +1,6 @@
 require 'digest/md5'
-require 'Instagram/Device'
-require 'Instagram/CONSTANTS'
+require 'instagram/device'
+require 'instagram/constants'
 
 module Instagram
   class User
@@ -69,7 +69,7 @@ module Instagram
 
       {
         agent: agent.join('; '),
-        version: CONSTANTS::PRIVATE_KEY[:APP_VERSION]
+        version: Constants::PRIVATE_KEY[:APP_VERSION]
       }
     end
 

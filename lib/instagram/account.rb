@@ -2,7 +2,7 @@ module Instagram
   module Account
     def self.login(user)
       request = Instagram::API.http(
-        url: CONSTANTS::URL + 'accounts/login/',
+        url: Constants::URL + 'accounts/login/',
         method: 'POST',
         user: user,
         body: format(

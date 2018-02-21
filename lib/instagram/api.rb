@@ -1,17 +1,17 @@
-require 'Instagram/API/version'
+require 'instagram/version'
 require 'openssl'
-require 'Base64'
+require 'base64'
 require 'digest/md5'
 require 'net/http'
 require 'json'
-require 'Instagram/User'
-require 'Instagram/account'
-require 'Instagram/feed'
+require 'instagram/user'
+require 'instagram/account'
+require 'instagram/feed'
 
 module Instagram
   module API
     def self.compute_hash(data)
-      OpenSSL::HMAC.hexdigest OpenSSL::Digest.new('sha256'), CONSTANTS::PRIVATE_KEY[:SIG_KEY], data
+      OpenSSL::HMAC.hexdigest OpenSSL::Digest.new('sha256'), Constants::PRIVATE_KEY[:SIG_KEY], data
     end
 
     def self.generate_uuid
@@ -49,11 +49,11 @@ module Instagram
       end
 
       request.initialize_http_header(:'User-Agent' => args[:user].useragent,
-                                     :Accept => Instagram::CONSTANTS::HEADER[:accept],
-                                     :'Accept-Encoding' => Instagram::CONSTANTS::HEADER[:encoding],
+                                     :Accept => Instagram::Constants::HEADER[:accept],
+                                     :'Accept-Encoding' => Instagram::Constants::HEADER[:encoding],
                                      :'Accept-Language' => args[:user].language,
-                                     :'X-IG-Capabilities' => Instagram::CONSTANTS::HEADER[:capabilities],
-                                     :'X-IG-Connection-Type' => Instagram::CONSTANTS::HEADER[:type],
+                                     :'X-IG-Capabilities' => Instagram::Constants::HEADER[:capabilities],
+                                     :'X-IG-Connection-Type' => Instagram::Constants::HEADER[:type],
                                      :Cookie => (args[:user].session.nil? ? '' : args[:user].session))
       request.body = args.key?(:body) ? args[:body] : nil
       http.request(request)
