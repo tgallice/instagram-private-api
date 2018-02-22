@@ -1,24 +1,21 @@
 module Instagram
   module Account
     def self.login(user)
-      response = Instagram::API.http(
-        url: Constants::URL + 'accounts/login/',
-        method: 'POST',
-        user: user,
-        body: format(
-          'ig_sig_key_version=4&signed_body=%s',
-          Instagram::API.generate_signature(
-            phone_id: user.phone_id,
-            device_id: user.device_id,
-            login_attempt_user: 0,
-            password: user.password,
-            username: user.username,
-            _csrftoken: nil,
-            _uuid: user.uuid,
-            adid: user.advertising_id,
-            guid: user.uuid,
-          ))
+      response = Instagram::API.post_request(
+        user,
+        'accounts/login/',
+        {
+          phone_id: user.phone_id,
+          device_id: user.device_id,
+          login_attempt_user: 0,
+          password: user.password,
+          username: user.username,
+          adid: user.advertising_id,
+          guid: user.uuid
+        },
+        true
       )
+
       json_body = JSON.parse response.body
       logged_in_user = json_body['logged_in_user']
       user.data = {

@@ -62,6 +62,39 @@ module Instagram
       http.request(request)
     end
 
+    def self.get_request(user, path)
+      Instagram::API.http(
+        url: Constants::URL + path,
+        method: 'GET',
+        user: user
+      )
+    end
+
+    def self.post_request(user, path, payload = {}, is_signed = false)
+      body = payload.merge(
+        {
+          client_context: Instagram::API.generate_uuid,
+          _csrftoken: user.csrf_token,
+          _uuid: user.uuid
+        }
+      )
+
+      if is_signed
+        body = format(
+          'ig_sig_key_version=4&signed_body=%s',
+          Instagram::API.generate_signature(body)
+        )
+      end
+
+
+      Instagram::API.http(
+        url: Constants::URL + path,
+        method: 'POST',
+        user: user,
+        body: body
+      )
+    end
+
     def self.generate_rank_token(pk)
       format('%s_%s', pk, Instagram::API.generate_uuid)
     end

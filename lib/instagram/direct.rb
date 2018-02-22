@@ -1,21 +1,43 @@
 module Instagram
   module Direct
-    def self.send_message(user, recipients, text)
-      response = Instagram::API.http(
-        url: Constants::URL + 'direct_v2/threads/broadcast/text/',
-        method: 'POST',
-        user: user,
-        body: Instagram::Utils.hash_encode({
+    def self.send_like(user, recipients)
+      JSON.parse Instagram::API.post_request(
+        user,
+        'direct_v2/threads/broadcast/like/',
+        {
           recipient_users: [recipients],
           action: 'send_item',
-          client_context: Instagram::API.generate_uuid,
-          text: text,
-          _csrftoken: user.csrf_token,
-          _uuid: user.uuid
-        })
-      )
+        }
+      ).body
+    end
 
-      JSON.parse response.body
+    def self.send_message(user, recipients, text)
+      JSON.parse Instagram::API.post_request(
+        user,
+        'direct_v2/threads/broadcast/text/',
+        {
+          text: text,
+          recipient_users: [recipients],
+          action: 'send_item',
+        }
+      ).body
+    end
+
+    def self.get_thread(user, thread_id, cursor_id = nil)
+      path = "direct_v2/threads/#{thread_id}/?use_unified_inbox=true"
+
+      if cursor_id
+        path += "&cursor=#{cursor_id}"
+      end
+
+      JSON.parse Instagram::API.get_request(user, path).body
+    end
+
+    def self.get_inbox(user)
+      JSON.parse  Instagram::API.get_request(
+        user,
+        'direct_v2/inbox/?persistentBadging=true&use_unified_inbox=true'
+      ).body
     end
   end
 end
