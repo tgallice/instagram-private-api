@@ -84,8 +84,9 @@ module Instagram
           'ig_sig_key_version=4&signed_body=%s',
           Instagram::API.generate_signature(body)
         )
+      else
+        body = Instagram::Utils.hash_encode(body)
       end
-
 
       Instagram::API.http(
         url: Constants::URL + path,
