@@ -33,11 +33,14 @@ module Instagram
       JSON.parse Instagram::API.get_request(user, path).body
     end
 
-    def self.get_inbox(user)
-      JSON.parse  Instagram::API.get_request(
-        user,
-        'direct_v2/inbox/?persistentBadging=true&use_unified_inbox=true'
-      ).body
+    def self.get_inbox(user, cursor_id = nil)
+      path = "direct_v2/inbox/?persistentBadging=true&use_unified_inbox=true"
+
+      if cursor_id
+        path += "&cursor=#{cursor_id}"
+      end
+
+      JSON.parse  Instagram::API.get_request(user, path).body
     end
   end
 end
