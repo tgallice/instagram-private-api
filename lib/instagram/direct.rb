@@ -1,18 +1,18 @@
 module Instagram
   module Direct
     def self.send_like(user, recipients)
-      JSON.parse Instagram::API.post_request(
+      Instagram::API.post_request(
         user,
         'direct_v2/threads/broadcast/like/',
         {
           recipient_users: [recipients],
           action: 'send_item',
         }
-      ).body
+      ).json_body
     end
 
     def self.send_message(user, recipients, text)
-      JSON.parse Instagram::API.post_request(
+      Instagram::API.post_request(
         user,
         'direct_v2/threads/broadcast/text/',
         {
@@ -20,7 +20,7 @@ module Instagram
           recipient_users: [recipients],
           action: 'send_item',
         }
-      ).body
+      ).json_body
     end
 
     def self.get_thread(user, thread_id, cursor_id = nil)
@@ -30,7 +30,7 @@ module Instagram
         path += "&cursor=#{cursor_id}"
       end
 
-      JSON.parse Instagram::API.get_request(user, path).body
+      Instagram::API.get_request(user, path).json_body
     end
 
     def self.get_inbox(user, cursor_id = nil)
@@ -40,7 +40,7 @@ module Instagram
         path += "&cursor=#{cursor_id}"
       end
 
-      JSON.parse  Instagram::API.get_request(user, path).body
+      Instagram::API.get_request(user, path).json_body
     end
   end
 end

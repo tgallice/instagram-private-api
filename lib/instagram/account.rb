@@ -16,7 +16,7 @@ module Instagram
         true
       )
 
-      json_body = JSON.parse response.body
+      json_body = response.json_body
       logged_in_user = json_body['logged_in_user']
       user.data = {
         id: logged_in_user['pk'],
@@ -28,7 +28,7 @@ module Instagram
         is_business: logged_in_user['is_business']
       }
       cookies_array = []
-      all_cookies = response.get_fields('set-cookie')
+      all_cookies = response.raw_response.get_fields('set-cookie')
       all_cookies.each do |cookie|
         cookies_array.push(cookie.split('; ')[0])
       end
@@ -46,7 +46,7 @@ module Instagram
         user: user
       )
 
-      json_result = JSON.parse result.body
+      json_result = result.json_body
       if json_result['num_results'] > 0
         user_result = json_result['users'][0]
         user_object = Instagram::User.new username, nil

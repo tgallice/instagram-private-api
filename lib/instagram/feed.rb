@@ -12,7 +12,7 @@ module Instagram
         user: user
       )
 
-      JSON.parse result.body
+      result.json_body
     end
   end
 end

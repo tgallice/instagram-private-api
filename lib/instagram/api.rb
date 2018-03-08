@@ -59,7 +59,14 @@ module Instagram
                                      :'Content-Type' => Instagram::Constants::HEADER[:content_type],
                                      :Cookie => (args[:user].session.nil? ? '' : args[:user].session))
       request.body = args.key?(:body) ? args[:body] : nil
-      http.request(request)
+
+      response = Instagram::Response.new(http.request(request))
+
+      unless response.is_ok?
+        Instagram::Exceptions.throw(response)
+      end
+
+      response
     end
 
     def self.get_request(user, path)
