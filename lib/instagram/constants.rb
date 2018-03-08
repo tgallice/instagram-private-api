@@ -7,7 +7,7 @@ module Instagram
     }.freeze
 
     HEADER = {
-        capabilities: '3boDAA=='.freeze,
+        capabilities: '3QI='.freeze,
         type: 'WIFI'.freeze,
         host: 'i.instagram.com'.freeze,
         connection: 'Close'.freeze,
