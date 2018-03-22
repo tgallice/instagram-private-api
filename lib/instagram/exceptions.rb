@@ -61,7 +61,7 @@ module Instagram
 
     def self.extract_message(body)
       if body['message'].is_a? String
-        return message
+        body['message']
       elsif body['message'].is_a? Array
         body['message'].join(', ');
       else
