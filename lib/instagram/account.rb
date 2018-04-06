@@ -1,13 +1,13 @@
 module Instagram
   module Account
-    def self.login(user)
+    def self.login(user, login_attempt = 0)
       response = Instagram::API.post_request(
         user,
         'accounts/login/',
         {
           phone_id: user.phone_id,
           device_id: user.device_id,
-          login_attempt_user: 0,
+          login_attempt_user: login_attempt,
           password: user.password,
           username: user.username,
           adid: user.advertising_id,
