@@ -1,9 +1,9 @@
 module Instagram
   module Constants
     PRIVATE_KEY = {
-        SIG_KEY: '0443b39a54b05f064a4917a3d1da4d6524a3fb0878eacabf1424515051674daa'.freeze,
+        SIG_KEY: '109513c04303341a7daf27bb41b268e633b30dcc65a3fe14503f743176113869'.freeze,
         SIG_VERSION: '4'.freeze,
-        APP_VERSION: '10.33.0'.freeze
+        APP_VERSION: '27.0.0.7.97'.freeze
     }.freeze
 
     HEADER = {
